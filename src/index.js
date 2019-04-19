@@ -24,9 +24,9 @@ async function geraImagem(texto) {
   const [topo, meio, baixo] = texto.split('\n').map(str => str.trim()).filter(Boolean);
   const text = new RetroText();
 
-  topo  && text.setLine(1, topo);
-  meio  && text.setLine(2, meio);
-  baixo && text.setLine(3, baixo);
+  topo  && text.setLine(1, topo.substring(0, 15));
+  meio  && text.setLine(2, meio.substring(0, 12));
+  baixo && text.setLine(3, baixo.substring(0, 25));
 
   text.setBackgroundStyle(BACKGROUNDS[~~(Math.random() * BACKGROUNDS.length)]);
   text.setTextStyle(TEXT_STYLES[~~(Math.random() * TEXT_STYLES.length)]);
