@@ -44,9 +44,9 @@ async function respondeMeme(display, tweet) {
       in_reply_to_status_id: tweet.id_str,
       auto_populate_reply_metadata: true
     };
-    await app.post('favorites/create', { id: tweet.id_str });
     const image = await geraImagem(texto);
     const media = await app.post('media/upload', { media: image });
+    await app.post('favorites/create', { id: tweet.id_str });
     await app.post('statuses/update', {
       ...options,
       media_ids: media.media_id_string
@@ -60,7 +60,7 @@ async function respondeMeme(display, tweet) {
 app.stream('statuses/filter', { track: TWITTER_USER }, stream => {
   console.log('Serviço iniciado');
   stream.on('data', tweet => {
-    if (tweet) {
+    if (tweet && !tweet.retweeted_status) {
       const display = extraiConteudo(tweet);
       if (display.includes(TWITTER_USER)) {
         respondeMeme(display, tweet);
