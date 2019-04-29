@@ -30,7 +30,16 @@ async function geraImagem(texto) {
 
   text.setBackgroundStyle(BACKGROUNDS[~~(Math.random() * BACKGROUNDS.length)]);
   text.setTextStyle(TEXT_STYLES[~~(Math.random() * TEXT_STYLES.length)]);
-  return text.fetchBuffer();
+
+  for (let tentativa = 0; tentativa < 5; tentativa++) {
+    try {
+      const buffer = await text.fetchBuffer();
+      return buffer;
+    } catch (e) {
+      await new Promise((r) => setTimeout(r, 1000));
+    }
+  }
+  throw new Error('Falha ao gerar imagem');
 }
 
 async function respondeMeme(display, tweet) {
